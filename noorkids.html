@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NoorKids - Islamitisch leren voor kinderen</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --donker: #0a0620;
+    --paars: #1a1060;
+    --goud: #FFD700;
+    --goud2: #FFA500;
+    --groen: #22c55e;
+    --roze: #FF6B9D;
+    --blauw: #4ECDC4;
+    --wit: #FFFFFF;
+    --ster: #FFD700;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--donker);
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+    color: var(--wit);
+  }
+
+  /* ── STERREN ACHTERGROND ── */
+  .stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--dur, 3s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  /* ── WOLKJES DECO ── */
+  .cloud {
+    position: absolute;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50px;
+    animation: floatCloud linear infinite;
+  }
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  @keyframes floatCloud {
+    from { transform: translateX(-200px); }
+    to { transform: translateX(110vw); }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    background: rgba(10,6,32,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,215,0,0.15);
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 24px;
+    color: var(--goud);
+    text-decoration: none;
+  }
+  .nav-logo .noor-dot {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #FFD700, #FF6B9D);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .nav-download {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #0a0620;
+    font-weight: 900;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(255,215,0,0.4);
+  }
+  .nav-download:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 30px rgba(255,215,0,0.6);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 100px 24px 60px;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  /* grote gloeiende cirkel achter alles */
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,215,0,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulseGlow 4s ease-in-out infinite;
+    z-index: 0;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+    50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+  }
+
+  /* islamitische geometrie ring */
+  .geo-ring {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border: 2px solid rgba(255,215,0,0.08);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spinSlow 30s linear infinite;
+    z-index: 0;
+  }
+  .geo-ring::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(255,215,0,0.05);
+    border-radius: 50%;
+    top: -20px; left: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+  }
+  @keyframes spinSlow {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  .hero-konijn {
+    position: relative;
+    z-index: 2;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+    animation: konijnBounce 3s ease-in-out infinite;
+    filter: drop-shadow(0 20px 40px rgba(255,215,0,0.3));
+  }
+  @keyframes konijnBounce {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+  }
+
+  /* konijn placeholder SVG */
+  .konijn-svg {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    z-index: 2;
+    animation: konijnBounce 3s ease-in-out infinite;
+    filter: drop-shadow(0 20px 40px rgba(255,107,157,0.4));
+  }
+
+  .hero-badge {
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,107,157,0.2));
+    border: 1px solid rgba(255,215,0,0.4);
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--goud);
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+  }
+
+  .hero-titel {
+    position: relative;
+    z-index: 2;
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(56px, 12vw, 100px);
+    line-height: 1;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B9D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 4px 20px rgba(255,215,0,0.3));
+  }
+
+  .hero-arabic {
+    position: relative;
+    z-index: 2;
+    font-size: clamp(20px, 4vw, 32px);
+    color: rgba(255,215,0,0.6);
+    margin-bottom: 16px;
+    letter-spacing: 4px;
+    direction: rtl;
+  }
+
+  .hero-sub {
+    position: relative;
+    z-index: 2;
+    font-size: clamp(16px, 3vw, 22px);
+    color: rgba(255,255,255,0.75);
+    font-weight: 700;
+    margin-bottom: 40px;
+    max-width: 480px;
+  }
+
+  .hero-knoppen {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 60px;
+  }
+
+  .knop-appstore {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #0a0620;
+    font-weight: 900;
+    font-size: 16px;
+    padding: 16px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 8px 40px rgba(255,215,0,0.5);
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+  }
+  .knop-appstore:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 16px 50px rgba(255,215,0,0.7);
+  }
+  .knop-appstore svg { width: 24px; height: 24px; }
+
+  .knop-meer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-weight: 800;
+    font-size: 16px;
+    padding: 16px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+  }
+  .knop-meer:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+  }
+
+  /* badges onderaan hero */
+  .hero-badges {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-badge-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 50px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+  }
+  .hero-badge-item span { font-size: 18px; }
+
+  /* ── GOLVENDE SCHEIDING ── */
+  .golf {
+    position: relative;
+    z-index: 1;
+    margin-top: -2px;
+    overflow: hidden;
+    line-height: 0;
+  }
+  .golf svg { display: block; width: 100%; }
+
+  /* ── SECTIES ── */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 24px;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .sectie-label {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,107,157,0.2));
+    border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 50px;
+    padding: 6px 18px;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--goud);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .sectie-titel {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(32px, 6vw, 52px);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .sectie-sub {
+    font-size: 17px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 600;
+    max-width: 500px;
+    line-height: 1.6;
+  }
+
+  /* ── WAT IS NOORKIDS ── */
+  .wat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-top: 48px;
+  }
+  @media (max-width: 768px) {
+    .wat-grid { grid-template-columns: 1fr; }
+  }
+  .wat-kaart {
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 28px;
+    padding: 32px 28px;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .wat-kaart::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, var(--kleur, rgba(255,215,0,0.05)) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .wat-kaart:hover::before { opacity: 1; }
+  .wat-kaart:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255,215,0,0.3);
+    box-shadow: 0 20px 60px rgba(255,215,0,0.1);
+  }
+  .wat-emoji {
+    font-size: 52px;
+    margin-bottom: 16px;
+    display: block;
+    animation: wobble 4s ease-in-out infinite;
+  }
+  @keyframes wobble {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
+  }
+  .wat-kaart h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    color: var(--goud);
+    margin-bottom: 8px;
+  }
+  .wat-kaart p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    font-weight: 600;
+  }
+
+  /* ── MODULES ── */
+  .modules-bg {
+    background: linear-gradient(180deg, #0a0620 0%, #0f0830 50%, #0a0620 100%);
+  }
+
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 48px;
+  }
+  @media (max-width: 768px) {
+    .modules-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .modules-grid { grid-template-columns: 1fr; }
+  }
+
+  .module-kaart {
+    border-radius: 24px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .module-kaart:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  }
+  .module-kaart .bg-emoji {
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    font-size: 80px;
+    opacity: 0.15;
+    transform: rotate(-15deg);
+    transition: all 0.3s;
+  }
+  .module-kaart:hover .bg-emoji {
+    opacity: 0.25;
+    transform: rotate(-5deg) scale(1.1);
+  }
+  .module-emoji {
+    font-size: 40px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .module-kaart h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+  .module-kaart p {
+    font-size: 13px;
+    opacity: 0.8;
+    font-weight: 600;
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+  }
+  .module-kaart .module-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 900;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-top: 12px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 1px;
+  }
+
+  /* module kleuren */
+  .m1 { background: linear-gradient(135deg, #1a0f40, #2d1b6e); color: white; }
+  .m1 .module-tag { background: rgba(255,215,0,0.2); color: #FFD700; }
+  .m2 { background: linear-gradient(135deg, #0f2a1a, #1a4332); color: white; }
+  .m2 .module-tag { background: rgba(34,197,94,0.2); color: #22c55e; }
+  .m3 { background: linear-gradient(135deg, #2a0f1a, #4a1030); color: white; }
+  .m3 .module-tag { background: rgba(255,107,157,0.2); color: #FF6B9D; }
+  .m4 { background: linear-gradient(135deg, #0f1a2a, #102040); color: white; }
+  .m4 .module-tag { background: rgba(78,205,196,0.2); color: #4ECDC4; }
+  .m5 { background: linear-gradient(135deg, #1a1a0f, #2a2a10); color: white; }
+  .m5 .module-tag { background: rgba(255,165,0,0.2); color: #FFA500; }
+  .m6 { background: linear-gradient(135deg, #0f0f2a, #151540); color: white; }
+  .m6 .module-tag { background: rgba(150,100,255,0.2); color: #9664ff; }
+
+  /* ── SCREENSHOTS ── */
+  .screenshots-bg {
+    background: linear-gradient(135deg, #0a0620, #120830);
+    overflow: hidden;
+    position: relative;
+  }
+  .screenshots-bg::before {
+    content: '';
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(255,107,157,0.08) 0%, transparent 60%);
+    top: -200px;
+    right: -200px;
+    border-radius: 50%;
+  }
+
+  .screenshots-rij {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding: 20px 0 40px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    margin-top: 48px;
+  }
+  .screenshots-rij::-webkit-scrollbar { display: none; }
+
+  .phone-mockup {
+    flex-shrink: 0;
+    width: 220px;
+    height: 440px;
+    background: linear-gradient(160deg, #1a1060, #0f0a30);
+    border-radius: 36px;
+    border: 3px solid rgba(255,215,0,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: all 0.3s;
+    animation: floatPhone var(--d, 4s) ease-in-out infinite;
+    animation-delay: var(--dd, 0s);
+  }
+  @keyframes floatPhone {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .phone-mockup:hover {
+    border-color: rgba(255,215,0,0.6);
+    box-shadow: 0 40px 100px rgba(255,215,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .phone-notch {
+    position: absolute;
+    top: 12px;
+    width: 80px;
+    height: 8px;
+    background: rgba(0,0,0,0.8);
+    border-radius: 10px;
+  }
+  .phone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+  }
+  .phone-content .ar {
+    font-size: 32px;
+    color: #FFD700;
+    font-weight: bold;
+  }
+  .phone-content .nl {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 700;
+  }
+  .phone-content .screen-emoji { font-size: 40px; }
+  .phone-label {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+  }
+
+  /* ── VOOR OUDERS ── */
+  .ouders-bg {
+    background: linear-gradient(135deg, #0f0830, #1a0f40);
+  }
+
+  .ouders-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-top: 48px;
+  }
+  @media (max-width: 768px) {
+    .ouders-grid { grid-template-columns: 1fr; }
+  }
+
+  .ouders-punten {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .ouder-punt {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 20px;
+    transition: all 0.3s;
+  }
+  .ouder-punt:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,215,0,0.2);
+    transform: translateX(4px);
+  }
+  .ouder-vinkje {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .vinkje-groen { background: rgba(34,197,94,0.2); }
+  .vinkje-goud { background: rgba(255,215,0,0.2); }
+  .vinkje-roze { background: rgba(255,107,157,0.2); }
+  .vinkje-blauw { background: rgba(78,205,196,0.2); }
+
+  .ouder-punt h4 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    color: var(--goud);
+    margin-bottom: 4px;
+  }
+  .ouder-punt p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .maker-kaart {
+    background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,107,157,0.08));
+    border: 1px solid rgba(255,215,0,0.2);
+    border-radius: 28px;
+    padding: 36px;
+    text-align: center;
+  }
+  .maker-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #FFD700, #FF6B9D);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+  }
+  .maker-kaart h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    color: var(--goud);
+    margin-bottom: 4px;
+  }
+  .maker-kaart .rol {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .maker-kaart .quote {
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    font-weight: 600;
+    line-height: 1.7;
+    font-style: italic;
+  }
+  .maker-kaart .quote::before { content: '"'; color: var(--goud); font-size: 24px; }
+  .maker-kaart .quote::after { content: '"'; color: var(--goud); font-size: 24px; }
+
+  /* ── DOWNLOAD CTA ── */
+  .cta-bg {
+    background: linear-gradient(135deg, #0a0620, #1a0f40);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-bg::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 60%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+
+  .cta-groot-tekst {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(40px, 8vw, 72px);
+    line-height: 1.1;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-groot-tekst span {
+    background: linear-gradient(135deg, #FFD700, #FF6B9D);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cta-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 700;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-knop-groot {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #0a0620;
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    padding: 20px 48px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 12px 50px rgba(255,215,0,0.5);
+    transition: all 0.3s;
+    position: relative;
+    z-index: 1;
+    border: none;
+    cursor: pointer;
+  }
+  .cta-knop-groot:hover {
+    transform: translateY(-6px) scale(1.05);
+    box-shadow: 0 20px 70px rgba(255,215,0,0.7);
+  }
+
+  .gratis-tag {
+    display: inline-block;
+    background: rgba(34,197,94,0.2);
+    border: 1px solid rgba(34,197,94,0.4);
+    color: #22c55e;
+    font-size: 13px;
+    font-weight: 900;
+    padding: 6px 16px;
+    border-radius: 50px;
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 1px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: rgba(0,0,0,0.5);
+    border-top: 1px solid rgba(255,215,0,0.1);
+    padding: 40px 24px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-logo {
+    font-family: 'Fredoka One', cursive;
+    font-size: 28px;
+    color: var(--goud);
+    margin-bottom: 8px;
+  }
+  .footer-arabic {
+    font-size: 14px;
+    color: rgba(255,215,0,0.4);
+    direction: rtl;
+    margin-bottom: 20px;
+    letter-spacing: 3px;
+  }
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .footer-links a {
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--goud); }
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    font-weight: 600;
+  }
+
+  /* ── VLIEGENDE STERRETJES DECO ── */
+  .deco-ster {
+    position: absolute;
+    pointer-events: none;
+    animation: vlieg var(--dur) ease-in-out infinite;
+    animation-delay: var(--delay);
+    font-size: var(--size, 16px);
+    opacity: 0.4;
+  }
+  @keyframes vlieg {
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+    50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+  }
+
+  /* ── SMOOTH SCROLL ── */
+  html { scroll-behavior: smooth; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 12px 20px; }
+    .nav-logo { font-size: 20px; }
+    section { padding: 60px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STERREN -->
+<div class="stars" id="sterren"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="noor-dot">🐇</div>
+    NoorKids
+  </a>
+  <a class="nav-download" href="#download">
+    ⬇ Download gratis
+  </a>
+</nav>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="geo-ring"></div>
+
+  <!-- Konijn SVG -->
+  <svg class="konijn-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- glow ring -->
+    <circle cx="100" cy="100" r="95" fill="rgba(255,215,0,0.08)" />
+    <!-- lichaam -->
+    <ellipse cx="100" cy="130" rx="45" ry="50" fill="#2d1b60"/>
+    <!-- hoofd -->
+    <circle cx="100" cy="85" r="38" fill="#2d1b60"/>
+    <!-- oren links -->
+    <ellipse cx="78" cy="48" rx="10" ry="28" fill="#2d1b60"/>
+    <ellipse cx="78" cy="48" rx="6" ry="22" fill="#FF6B9D"/>
+    <!-- oren rechts -->
+    <ellipse cx="122" cy="48" rx="10" ry="28" fill="#2d1b60"/>
+    <ellipse cx="122" cy="48" rx="6" ry="22" fill="#FF6B9D"/>
+    <!-- ogen -->
+    <circle cx="88" cy="82" r="8" fill="#22c55e"/>
+    <circle cx="112" cy="82" r="8" fill="#22c55e"/>
+    <circle cx="90" cy="81" r="4" fill="#0a0620"/>
+    <circle cx="114" cy="81" r="4" fill="#0a0620"/>
+    <!-- glinstering ogen -->
+    <circle cx="92" cy="79" r="2" fill="white"/>
+    <circle cx="116" cy="79" r="2" fill="white"/>
+    <!-- neus -->
+    <ellipse cx="100" cy="94" rx="5" ry="3" fill="#FF6B9D"/>
+    <!-- mond -->
+    <path d="M94 98 Q100 104 106 98" stroke="#FF6B9D" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- truitje -->
+    <ellipse cx="100" cy="145" rx="40" ry="35" fill="#1a4332"/>
+    <!-- ster op truitje -->
+    <text x="100" y="152" text-anchor="middle" font-size="20">⭐</text>
+    <!-- armpjes -->
+    <ellipse cx="60" cy="140" rx="12" ry="20" fill="#2d1b60" transform="rotate(-20 60 140)"/>
+    <ellipse cx="140" cy="140" rx="12" ry="20" fill="#2d1b60" transform="rotate(20 140 140)"/>
+    <!-- gouden gloed -->
+    <circle cx="100" cy="100" r="95" fill="none" stroke="rgba(255,215,0,0.15)" stroke-width="3"/>
+  </svg>
+
+  <div class="hero-badge">✨ Islamitisch leren voor kinderen</div>
+
+  <h1 class="hero-titel">NoorKids</h1>
+  <div class="hero-arabic">نور كيدز</div>
+  <p class="hero-sub">Leer de islam op een super leuke manier! Voor kinderen van 6 tot 12 jaar, helemaal in het Nederlands 🌙</p>
+
+  <div class="hero-knoppen">
+    <a class="knop-appstore" href="#download">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      App Store — Gratis
+    </a>
+    <a class="knop-meer" href="#modules">
+      Ontdek de app ↓
+    </a>
+  </div>
+
+  <div class="hero-badges">
+    <div class="hero-badge-item"><span>🚫</span> Geen advertenties</div>
+    <div class="hero-badge-item"><span>🔒</span> Geen data verzameld</div>
+    <div class="hero-badge-item"><span>🕌</span> 100% islamitisch</div>
+    <div class="hero-badge-item"><span>🇳🇱</span> Volledig Nederlands</div>
+  </div>
+</section>
+
+<!-- GOLF -->
+<div class="golf">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" height="80">
+    <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#0f0830"/>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- WAT IS NOORKIDS -->
+<!-- ══════════════════════════════════════════ -->
+<section style="background: #0f0830;">
+  <div class="container">
+    <div class="sectie-label">🌟 Over de app</div>
+    <h2 class="sectie-titel">Leren over Allah<br><span style="color:#FFD700;">was nog nooit zo leuk!</span></h2>
+    <p class="sectie-sub">NoorKids combineert islamitisch onderwijs met moderne gamification zodat kinderen elke dag willen leren.</p>
+
+    <div class="wat-grid">
+      <div class="wat-kaart" style="--kleur: rgba(255,215,0,0.08)">
+        <span class="wat-emoji">🏆</span>
+        <h3>Punten & Badges</h3>
+        <p>Verdien sterren en badges voor elke naam die je leert. Bouw een streak op door elke dag te oefenen.</p>
+      </div>
+      <div class="wat-kaart" style="--kleur: rgba(78,205,196,0.08)">
+        <span class="wat-emoji">🧠</span>
+        <h3>Slim herhaalsysteem</h3>
+        <p>De app onthoudt wat je al weet en wat je nog moet leren. Zo vergeet je nooit meer wat je hebt geleerd!</p>
+      </div>
+      <div class="wat-kaart" style="--kleur: rgba(255,107,157,0.08)">
+        <span class="wat-emoji">🔊</span>
+        <h3>Echte audio</h3>
+        <p>Hoor de correcte uitspraak van alle Arabische woorden, names en duas door een echte stem.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- MODULES -->
+<!-- ══════════════════════════════════════════ -->
+<section class="modules-bg" id="modules">
+  <div class="container">
+    <div class="sectie-label">📚 Wat ga je leren?</div>
+    <h2 class="sectie-titel">6 gave modules<br><span style="color:#22c55e;">voor elke dag</span></h2>
+    <p class="sectie-sub">Van de 99 namen van Allah tot het Arabische alfabet, NoorKids heeft alles wat een kind nodig heeft.</p>
+
+    <div class="modules-grid">
+
+      <div class="module-kaart m1">
+        <span class="bg-emoji">الله</span>
+        <span class="module-emoji">✨</span>
+        <h3>99 Namen van Allah</h3>
+        <p>Leer alle 99 namen met uitleg, audio en quizzen. Met slim herhaalsysteem!</p>
+        <span class="module-tag">⭐ Populairste module</span>
+      </div>
+
+      <div class="module-kaart m2">
+        <span class="bg-emoji">📖</span>
+        <span class="module-emoji">📚</span>
+        <h3>Profetenverhalen</h3>
+        <p>Luister naar de verhalen van Ibrahim, Yusuf, Yunus, Abu Bakr en Saladin.</p>
+        <span class="module-tag">🎧 Lees-voor audio</span>
+      </div>
+
+      <div class="module-kaart m3">
+        <span class="bg-emoji">🤲</span>
+        <span class="module-emoji">🤲</span>
+        <h3>Duas leren</h3>
+        <p>Elke dua voor het dagelijks leven. Slapen, eten, op reis, naar school en meer.</p>
+        <span class="module-tag">🌙 Dagelijkse duas</span>
+      </div>
+
+      <div class="module-kaart m4">
+        <span class="bg-emoji">🕌</span>
+        <span class="module-emoji">🕌</span>
+        <h3>Gebed leren</h3>
+        <p>Leer stap voor stap hoe je de gebeden uitvoert met duidelijke uitleg en audio.</p>
+        <span class="module-tag">🙏 Stap voor stap</span>
+      </div>
+
+      <div class="module-kaart m5">
+        <span class="bg-emoji">ب</span>
+        <span class="module-emoji">🔤</span>
+        <h3>Arabische letters</h3>
+        <p>Herken, schrijf en spreek alle 28 Arabische letters met interactief schrijfsysteem.</p>
+        <span class="module-tag">✍️ Schrijven oefenen</span>
+      </div>
+
+      <div class="module-kaart m6">
+        <span class="bg-emoji">💧</span>
+        <span class="module-emoji">🌊</span>
+        <h3>Wonderkoran</h3>
+        <p>Ontdek de wonderen van water en zee zoals beschreven in de Koran.</p>
+        <span class="module-tag">🌟 Subhan Allah!</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SCREENSHOTS -->
+<!-- ══════════════════════════════════════════ -->
+<section class="screenshots-bg">
+  <div class="container">
+    <div class="sectie-label">📱 Hoe ziet het eruit?</div>
+    <h2 class="sectie-titel">Super mooi<br><span style="color:#FF6B9D;">en kindvriendelijk!</span></h2>
+  </div>
+
+  <div class="screenshots-rij" style="padding: 20px 40px 60px;">
+
+    <div class="phone-mockup" style="--d:4s;--dd:0s;">
+      <div class="phone-notch"></div>
+      <div class="phone-content">
+        <span class="screen-emoji">✨</span>
+        <div class="ar">اللَّهُ</div>
+        <div class="nl">Allah — De Enige God</div>
+        <div style="background:rgba(255,215,0,0.15);border-radius:12px;padding:8px 14px;margin-top:8px;">
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);font-weight:700;">99 Namen van Allah</div>
+        </div>
+      </div>
+      <div class="phone-label">Namen module</div>
+    </div>
+
+    <div class="phone-mockup" style="--d:4.5s;--dd:0.5s;">
+      <div class="phone-notch"></div>
+      <div class="phone-content">
+        <span class="screen-emoji">🤲</span>
+        <div class="ar" style="font-size:18px;">بِسْمِ اللَّهِ</div>
+        <div class="nl">Bismillah dua</div>
+        <div style="display:flex;gap:6px;margin-top:10px;">
+          <div style="background:#22c55e;border-radius:8px;padding:6px 10px;font-size:10px;font-weight:800;">✓ Goed!</div>
+          <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:6px 10px;font-size:10px;">Volgende →</div>
+        </div>
+      </div>
+      <div class="phone-label">Duas quiz</div>
+    </div>
+
+    <div class="phone-mockup" style="--d:5s;--dd:1s;">
+      <div class="phone-notch"></div>
+      <div class="phone-content">
+        <span class="screen-emoji">🔤</span>
+        <div class="ar" style="font-size:48px;color:#FFD700;">ب</div>
+        <div class="nl">Ba — de letter Baa</div>
+        <div style="background:rgba(255,165,0,0.15);border-radius:12px;padding:8px;margin-top:8px;width:100%;">
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);font-weight:700;">Schrijf de letter na</div>
+          <div style="height:40px;border:1px dashed rgba(255,215,0,0.3);border-radius:8px;margin-top:4px;"></div>
+        </div>
+      </div>
+      <div class="phone-label">Arabische letters</div>
+    </div>
+
+    <div class="phone-mockup" style="--d:4.2s;--dd:1.5s;">
+      <div class="phone-notch"></div>
+      <div class="phone-content">
+        <span class="screen-emoji">📖</span>
+        <div class="nl" style="font-size:12px;line-height:1.4;color:rgba(255,255,255,0.8);">Ibrahim (AS) keek naar de sterren en dacht na over wie ze had gemaakt...</div>
+        <div style="background:rgba(34,197,94,0.15);border-radius:12px;padding:8px 14px;margin-top:10px;">
+          <div style="font-size:11px;color:#22c55e;font-weight:800;">🎧 Luister mee</div>
+        </div>
+      </div>
+      <div class="phone-label">Profetenverhalen</div>
+    </div>
+
+    <div class="phone-mockup" style="--d:4.8s;--dd:0.3s;">
+      <div class="phone-notch"></div>
+      <div class="phone-content">
+        <span class="screen-emoji">🏆</span>
+        <div style="font-size:13px;font-weight:800;color:#FFD700;margin-bottom:6px;">🔥 5 dagen op rij!</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;">
+          <div style="background:rgba(255,215,0,0.15);border-radius:10px;padding:8px;text-align:center;">
+            <div style="font-size:20px;">⭐</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.6);">Week held</div>
+          </div>
+          <div style="background:rgba(255,107,157,0.15);border-radius:10px;padding:8px;text-align:center;">
+            <div style="font-size:20px;">🔥</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.6);">Eerste vlam</div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-label">Badges & Streak</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- VOOR OUDERS -->
+<!-- ══════════════════════════════════════════ -->
+<section class="ouders-bg">
+  <div class="container">
+    <div class="sectie-label">👨‍👩‍👧 Voor ouders</div>
+    <h2 class="sectie-titel">Veilig en<br><span style="color:#4ECDC4;">vertrouwd</span></h2>
+
+    <div class="ouders-grid">
+      <div class="ouders-punten">
+
+        <div class="ouder-punt">
+          <div class="ouder-vinkje vinkje-groen">🚫</div>
+          <div>
+            <h4>Geen advertenties</h4>
+            <p>NoorKids bevat absoluut geen advertenties. Uw kind wordt nooit blootgesteld aan reclame.</p>
+          </div>
+        </div>
+
+        <div class="ouder-punt">
+          <div class="ouder-vinkje vinkje-goud">🔒</div>
+          <div>
+            <h4>Geen data verzameld</h4>
+            <p>Wij verzamelen geen persoonlijke gegevens. Alle voortgang wordt alleen op het apparaat opgeslagen.</p>
+          </div>
+        </div>
+
+        <div class="ouder-punt">
+          <div class="ouder-vinkje vinkje-roze">📚</div>
+          <div>
+            <h4>Authentieke bronnen</h4>
+            <p>Alle duas en islamitische content is gebaseerd op Sahih bronnen zoals Bukhari en Muslim.</p>
+          </div>
+        </div>
+
+        <div class="ouder-punt">
+          <div class="ouder-vinkje vinkje-blauw">🇳🇱</div>
+          <div>
+            <h4>100% Nederlands</h4>
+            <p>Speciaal gemaakt voor Nederlandse moslimkinderen. Alle uitleg is in duidelijk Nederlands.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="maker-kaart">
+        <div class="maker-avatar">🐇</div>
+        <h3>Anouar Otmane</h3>
+        <div class="rol">Installateur & Maker van NoorKids · Den Haag</div>
+        <p class="quote">Ik maakte NoorKids voor mijn eigen kinderen. Ik wilde een app die echt islamitisch is, echt Nederlands, en echt leuk. Geen compromissen.</p>
+        <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+          <div style="background:rgba(255,215,0,0.15);border-radius:50px;padding:6px 14px;font-size:12px;font-weight:800;color:#FFD700;">🔨 ANO Installatie</div>
+          <div style="background:rgba(34,197,94,0.15);border-radius:50px;padding:6px 14px;font-size:12px;font-weight:800;color:#22c55e;">🎬 YouTube Creator</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- DOWNLOAD CTA -->
+<!-- ══════════════════════════════════════════ -->
+<section class="cta-bg" id="download">
+  <div class="container" style="text-align:center;">
+
+    <!-- grote konijn -->
+    <div style="font-size:80px;margin-bottom:20px;animation:bounce 2s ease-in-out infinite;">🐇</div>
+
+    <h2 class="cta-groot-tekst">
+      Begin vandaag nog<br>
+      <span>met leren!</span>
+    </h2>
+    <p class="cta-sub">Gratis te downloaden. Geen abonnement. Geen advertenties.</p>
+
+    <a class="cta-knop-groot" href="#">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Download in de App Store
+    </a>
+
+    <div><span class="gratis-tag">✓ 100% GRATIS — VOOR ALTIJD</span></div>
+
+    <div style="margin-top:40px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <div style="font-size:13px;color:rgba(255,255,255,0.4);font-weight:700;">
+        بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ══════════════════════════════════════════ -->
+<footer>
+  <div class="footer-logo">🐇 NoorKids</div>
+  <div class="footer-arabic">نور كيدز</div>
+  <div class="footer-links">
+    <a href="#">Privacybeleid</a>
+    <a href="#">Contact</a>
+    <a href="#">Over ons</a>
+    <a href="mailto:info@noorkids.nl">info@noorkids.nl</a>
+  </div>
+  <div class="footer-copy">© 2026 NoorKids · ANO Installatie & Onderhoud · Den Haag</div>
+</footer>
+
+<script>
+// ── STERREN GENEREREN ──
+const sterrenContainer = document.getElementById('sterren');
+for (let i = 0; i < 120; i++) {
+  const ster = document.createElement('div');
+  ster.className = 'star';
+  const size = Math.random() * 3 + 1;
+  ster.style.cssText = `
+    width: ${size}px;
+    height: ${size}px;
+    left: ${Math.random() * 100}%;
+    top: ${Math.random() * 100}%;
+    --dur: ${Math.random() * 4 + 2}s;
+    --delay: ${Math.random() * 4}s;
+  `;
+  sterrenContainer.appendChild(ster);
+}
+
+// ── WOLKEN ──
+for (let i = 0; i < 3; i++) {
+  const wolk = document.createElement('div');
+  wolk.className = 'cloud';
+  const h = Math.random() * 60 + 20;
+  const w = h * (2 + Math.random());
+  wolk.style.cssText = `
+    width: ${w}px;
+    height: ${h}px;
+    top: ${Math.random() * 40 + 10}%;
+    animation-duration: ${Math.random() * 40 + 60}s;
+    animation-delay: ${Math.random() * -60}s;
+  `;
+  document.body.appendChild(wolk);
+}
+
+// ── SCROLL ANIMATIES ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.wat-kaart, .module-kaart, .ouder-punt, .maker-kaart').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
